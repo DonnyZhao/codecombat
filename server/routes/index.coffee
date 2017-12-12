@@ -6,6 +6,8 @@ module.exports.setup = (app) ->
   app.delete('/admin/feature-mode', mw.admin.deleteFeatureMode)
   app.get('/admin/calculate-lines-of-code', mw.admin.calculateLinesOfCode) # For outcomes report
 
+  app.get('/apcsp-files/*', mw.apcsp.getAPCSPFile)
+
   app.all('/api/*', mw.api.clientAuth)
 
   app.get('/api/auth/login-o-auth', mw.auth.loginByOAuthProvider)
