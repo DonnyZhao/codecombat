@@ -14,7 +14,7 @@ getAPCSPFile = wrap (req, res) ->
   if not req.user
     throw new errors.Unauthorized('You must be logged in')
 
-  unless req.user.isTeacher() or req.user.isAdmin()
+  unless req.user.get('verifiedTeacher') or req.user.isAdmin()
     throw new errors.Forbidden('You cannot access this file')
 
   rest = req.params['0']

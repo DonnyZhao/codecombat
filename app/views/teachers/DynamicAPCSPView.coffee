@@ -12,16 +12,12 @@ module.exports = class DynamicAPCSPView extends RootView
 
   initialize: (options, @name) ->
     super(options)
-    
     @name ?= 'index'
-    
-    console.log(arguments)
     @content = ''
     @loadingData = true
     
     if _.string.startsWith(@name, 'markdown/')
       promise = api.markdown.getMarkdownFile(@name.replace('markdown/', ''))
-      console.log '?'
     else
       promise = api.apcsp.getAPCSPFile(@name)
     
@@ -30,14 +26,13 @@ module.exports = class DynamicAPCSPView extends RootView
       @loadingData = false
       @render()
     ).catch((error) =>
-      console.log error
       @loadingData = false
       if error.code is 404
         @notFound = true
         @render()
       else
         console.error(error)
-        @error = true
+        @error = error.message
         @render()
       
     )
@@ -61,5 +56,5 @@ module.exports = class DynamicAPCSPView extends RootView
       aceEditor.$blockScrolling = Infinity
     if _.contains(location.href, '#')
       _.defer =>
-# Remind the browser of the fragment in the URL, so it jumps to the right section.
+        # Remind the browser of the fragment in the URL, so it jumps to the right section.
         location.href = location.href
